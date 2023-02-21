@@ -1,0 +1,70 @@
+/**
+ * Get size of element in pixels dynamically
+ * 
+ * @param { HTMLElement } element
+ * @returns { Object<string, number> }
+ */
+function getSize(element) {
+    if (!(element instanceof HTMLElement)) {
+        throw new Error('Debes pasar un elemento HTML como argumento de la función');
+    }
+
+    const boundingClientRect = element.getBoundingClientRect();
+
+    const size = {
+        width: boundingClientRect.width,
+        height: boundingClientRect.height
+    }
+
+    return size;
+}
+
+/**
+ * Apply height in function of width
+ * 
+ * @param {HTMLElement} element Element to apply height
+ * @param {number} width Porcentage of width
+ * @returns { void }
+ */
+function applyHeight(element, width) {
+    if (!(element instanceof HTMLElement)) {
+        throw new Error('El primer argumento debe ser un elemento HTML');
+    }
+
+    if (typeof width !== 'number') {
+        throw new Error('El segundo argumento debe ser un número');
+    }
+
+    const size = getSize(element);
+    const height = size.width * (width / 100);
+
+    element.setAttribute('style', `--section-height: ${height}px`);
+}
+
+/**
+ * Apply width in function of height
+ * 
+ * @param {HTMLElement} element
+ * @param {number} height
+ * @returns { void }
+ */
+function applyWidth(element, height) {
+    if (!(element instanceof HTMLElement)) {
+        throw new Error('El primer argumento debe ser un elemento HTML');
+    }
+
+    if (typeof height !== 'number') {
+        throw new Error('El segundo argumento debe ser un número');
+    }
+
+    const size = getSize(element);
+    const width = size.height * (height / 100);
+    
+    element.setAttribute('style', `--section-width: ${width}px`);
+}
+
+export {
+    getSize,
+    applyHeight,
+    applyWidth
+}

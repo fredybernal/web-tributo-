@@ -1,0 +1,57 @@
+import { applyHeight, getSize } from "./getSize.js";
+
+// @ts-check 
+const banner = document.querySelector(".header__banner");
+
+/**
+ * Aplicar altura al elemento en función de su anchura.
+ * 
+ * @param { string } selector
+ * @param { number } width - Establece el porcentaje del cero (0) al cien (100).
+ * @returns { void }
+ */
+function setHeightElement(selector, width) {
+    const element = document.querySelector(selector);
+    if (!element) return;
+
+    applyHeight(element, width);
+
+    addEventListener("resize", function() {
+        applyHeight(element, width);
+    });
+}
+
+setHeightElement("#banner", 45);
+
+/**
+ * 
+ * @param { string } selector 
+ * @returns { void }
+ */
+function touchMenu(selector) {
+    const element = document.querySelector(selector);
+    if (!element) return;
+
+    const menuOpen = document.querySelector("#menu-open");
+    if (!menuOpen) return;
+
+    const items = menuOpen.querySelectorAll("li");
+    let menuHeight = 0;
+
+    items.forEach((item) => {
+        const { height } = getSize(item);
+        menuHeight += height;
+    });
+
+    element.addEventListener("click", function() {
+        this.classList.toggle("button--selected");
+        menuOpen.classList.toggle("menu--open");
+        this.setAttribute("style", `--menu-height: ${menuHeight}px`);
+    });
+
+    menuOpen.addEventListener("click", function() {
+        element.click();
+    });
+}
+
+touchMenu("#button-menu");
